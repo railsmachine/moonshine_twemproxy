@@ -5,7 +5,7 @@ module Moonshine::Twemproxy
 
     defaults = {
       :version => '0.3.0',
-      :listen => '0.0.0.0:6379',
+      :listen => '127.0.0.1:6379',
       :servers => [],
       :redis => true,
       :hash => "fnv1a_64",
