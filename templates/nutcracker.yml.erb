@@ -1,0 +1,11 @@
+alpha:
+  listen: <%= configuration[:twemproxy][:listen] %>
+  redis: <%= configuration[:twemproxy][:redis] %>
+  hash: <%= configuration[:twemproxy][:hash] %>
+  distribution: <%= configuration[:twemproxy][:distribution] %>
+  auto_eject_hosts: <%= configuration[:twemproxy][:auto_eject_hosts] %>
+  server_retry_timeout: <%= configuration[:twemproxy][:server_retry_timeout] %>
+  server_failure_limit: <%= configuration[:twemproxy][:server_failure_limit] %>
+  timeout: <%= configuration[:twemproxy][:timeout] %>
+  servers: <% configuration[:twemproxy][:servers].each do |s| %>
+  - <%= s %><% end %>

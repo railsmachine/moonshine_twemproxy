@@ -1,0 +1,19 @@
+description "nutcracker/twemproxy"
+
+env DAEMON=/usr/local/sbin/nutcracker
+env DAEMON_ARGS="-c /etc/twemproxy/nutcracker.yml -o /var/log/twemproxy/nutcracker.log -d"
+
+setgid twemproxy
+setuid twemproxy
+
+start on runlevel [2345]
+stop on runlevel [^2345]
+
+expect daemon
+respawn
+
+script
+    # look at this, pulling in config values -- totes cray
+    # [ -r /etc/default/nutcracker ] && . /etc/default/nutcracker
+    exec $DAEMON $DAEMON_ARGS -p /var/run/twemproxy/nutcracker.pid
+end script
