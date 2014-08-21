@@ -44,6 +44,10 @@ end
 
 Right now, moonshine_twemproxy doesn't support multiple frontends - we only create one - but we'll add that if there's interest.
 
+## Monitoring
+
+The plugin sets up an xinetd service that returns the response from twemproxy's stat service.  It runs on localhost:1025.  This makes it really easy to add twemproxy stats to Scout using the Generic JSON Plugin!
+
 ***
 
 Unless otherwise specified, all content copyright &copy; 2014, [Rails Machine, LLC](http://railsmachine.com)
