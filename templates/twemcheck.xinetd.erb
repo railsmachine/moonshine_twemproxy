@@ -1,0 +1,20 @@
+# default: on
+# description: twemcheck
+
+service twemcheck
+{
+  protocol = tcp
+  type = unlisted
+  disable = no
+  socket_type = stream
+  port = 1025
+  user = <%= configuration[:user] %>
+  server = /usr/local/bin/twemcheck
+  log_on_failure += USERID
+  only_from = 127.0.0.1
+  wait = no
+  per_source = UNLIMITED
+  instances = 100
+  cps = 0 1
+  nice = 10
+}

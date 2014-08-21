@@ -30,6 +30,7 @@ module Moonshine::Twemproxy
     recipe :twemproxy_user
     recipe :twemproxy_config
     recipe :twemproxy_service
+    recipe :twemcheck
   end
 
   def twemproxy_package
@@ -70,6 +71,29 @@ module Moonshine::Twemproxy
     :owner => 'root',
     :mode => '755'
     
+  end
+
+  def twemcheck
+    package 'xinetd', :ensure => :installed
+    
+    service 'xinetd',
+      :ensure => :running,
+      :require => package('xinetd')
+      
+    file '/etc/xinetd.d/twemcheck',
+      :content => template(File.join(File.dirname(__FILE__), '..', '..', 'templates', 'twemcheck.xinetd.erb')),
+      :ensure => :present,
+      :owner => "root",
+      :require => package("xinetd"),
+      :notify => service('xinetd')
+      
+    file '/usr/local/bin/twemcheck',
+      :content => template(File.join(File.dirname(__FILE__), '..', '..', 'templates', 'twemcheck.erb')),
+      :ensure => :present,
+      :owner => configuration[:user],
+      :mode => '755',
+      :require => package('xinetd'),
+      :notify => service('xinetd')
   end
 
   def twemproxy_user

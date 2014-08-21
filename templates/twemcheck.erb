@@ -1,0 +1,36 @@
+#! /usr/bin/ruby
+
+require 'net/telnet'
+require 'timeout'
+require 'json'
+
+resp = {"error" => "unknown error"}
+respcode = 200
+respmsg = "OK"
+
+begin
+  Timeout::timeout(2) do
+    tnet = Net::Telnet.new(
+     "Host" => "localhost",
+     "Port" => "22222"
+    )
+
+    resp = tnet.cmd("")
+  end
+rescue Exception => e
+  respcode = 503
+  respmsg = "Service Unavailable"
+  resp['error'] = "Twemproxy may not be running."
+  resp = resp.to_json
+end
+
+
+
+out = "HTTP/1.1 #{respcode} #{respmsg}\r\n"
+out << "Content-Type: text/json\r\n"
+out << "\r\n"
+out << resp
+out << "\r\n"
+
+$stdout.puts out
+exit
